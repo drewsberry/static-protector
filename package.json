@@ -1,0 +1,14 @@
+{
+  "name": "static-protector",
+  "version": "1.0.0",
+  "description": "Password protect static files.",
+  "main": "build.js",
+  "author": "Drew Silcock <drew@drewsilcock.co.uk>",
+  "license": "MIT",
+  "scripts": {
+    "run": "node build.js"
+  },
+  "dependencies": {
+    "crypto-js": "^3.1.9-1"
+  }
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Login to view page</title>
+  </head>
+
+  <body>
+    <div class="sp-authentication-ui">
+      <input id="sp-login-password" type="password" value="">
+      <button id="sp-login-button" type="button">View Content</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"
+            integrity="sha256-xoJklEMhY9dP0n54rQEaE9VeRnBEHNSfyfHlKkr9KNk="
+            crossorigin="anonymous"></script>
+
+    <script src="lib.js"></script>
+
+    <script>
+"use strict";
+
+const hmac = "{{% AUTHENTICATION_CODE %}}";
+
+function checkPassword(encryptedContent, password) {
+  const hmacAttempt = lib.hmacString(encryptedContent, password);
+
+  if (hmacAttempt === hmac) {
+    const decryptedContent = lib.decryptString(encryptedContent, password);
+
+    console.log("Correct password. Content is:", decryptedContent);
+    return decryptedContent;
+  }
+
+  return null;
+}
+
+function appendContent(content) {
+  const $container = $("<div>");
+  $container.attr("id", "sp-content");
+  $container.append(content);
+
+  $(document.body).append($container);
+}
+
+/**
+  Hide the UI elements used for the authentication.
+  */
+function hideAuthenticationUi() {
+  const authUiContainer = $("#sp-authentication-ui");
+  authUiContainer.css("display", "none");
+}
+
+function initialiseVerifyForm() {
+  const $loginButton = $("#sp-login-button");
+  const $passwordInput = $("#sp-login-password");
+
+  $.ajax({
+    method: "GET",
+    url: "encrypted.html",
+  }).done(function (data) {
+    const protectedContent = data;
+
+    console.log(protectedContent);
+
+    $loginButton.on("click", function () {
+      const inputPassword = $passwordInput.val();
+      const decryptedContent = checkPassword(protectedContent, inputPassword);
+
+      console.log(decryptedContent !== null ? "Valid" : "Invalid");
+
+      if (decryptedContent !== null) {
+        appendContent(decryptedContent);
+        hideAuthenticationUi();
+      }
+    });
+  });
+}
+
+$(function () {
+  initialiseVerifyForm();
+});
+    </script>
+  </body>
+</html>
