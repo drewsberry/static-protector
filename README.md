@@ -10,6 +10,12 @@ There is a build script that encrypts the document(s) using AES-256 and calculat
 
 Calculating the HMAC of the unencrypted content leaves you open to some chosen ciphertext attacks against the content. Calculating the HMAC of the encrypted content still allows you to verify that the provided password is correct before actually trying to encrypt it, but doesn't reveal anything about the original plaintext in the process. See [this crypto.stackexchange post](http://crypto.stackexchange.com/a/205) for more information.
 
+## Testing
+
+When you're testing a build, either local or remote, you can use BrowserStack to spin up a VM for any platform or browser and test it out, with debugging:
+
+[![Start BrowserStack Testing](https://digitalscientists.com/system/images/1448/original/logo-browserstack.png "Start BrowserStack Testing")](https://www.browserstack.com/start)
+
 ## TODO:
 
 * Allow multiple documents to be protected.
